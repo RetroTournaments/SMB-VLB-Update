@@ -1,0 +1,4 @@
+- windows builds for graphite are on laptop desktop/repos/graphite and c/repos/opencv
+- deploy by running deploy.py script and copying 'graphite_x64.zip' and 'graphite_x86.zip' to flibidy-us-southeast:/flibidydibidy.com/graphite
+- old code on linux machine /media/matthew/c59deab0-d0b8-4c0b-844f-ee63ed620bbf/Matthew/60.01_RGM/10.02_visual_leaderboard/10.02.00_smb
+- 09/08/2023 ran 01-scrapesrcom.py and decided to check in 01-runs.csv to the repo
