@@ -32,7 +32,6 @@ with open (OUTPUT, "w") as f:
     f.write("src_run_id,src_platform_id,src_region_id,display_name,date_played,elapsed_ms,video_url\n")
     for line in lines:
         f.write(line)
-        f.write("\n")
 
     for r in lb.runs:
         srcrun = r["run"]
