@@ -1,6 +1,6 @@
 # This script is the second script.
 # Because some of the runs are already done (their fm2 files are already in the repo) the timestamps and video information do not need to be defined.
-# This filters 01-runs.csv and creates 02-to-crop.csv, which goes to the google sheet and discord for manual verification, time stamp definition, and crop definition somehow..
+# This filters 01-runs.csv and creates 02-to-crop.csv, which goes to the google sheet and discord for manual verification and time stamp definition.
 
 INPUT = "01-runs.csv"
 OUTPUT = "02-to-crop.csv"
