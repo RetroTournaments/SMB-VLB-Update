@@ -10,6 +10,18 @@ import srcomapi.datatypes as dt
 TIME_CUTOFF_MS = 300000
 OUTPUT = "01-runs.csv"
 
+PLATFORM_FPS = {
+    "jm95z9olpr184lqn": "60.09881",
+    "jm95z9olo316x197": "60.09881",
+    "7m6ylw9ppr184lqn": "60.00000",
+    "7g6mym6rpr184lqn": "60.09881",
+    "kz9wyneppr184lqn": "60.00000",
+    "nzelreqppr184lqn": "59.82400",
+    "gde3rwekpr184lqn": "60.09881",
+    "mr6k409zo316x197": "60.09881",
+    "7m6ylw9po316x197": "60.00000"
+}
+
 api = srcomapi.SpeedrunCom()
 smb = api.search(srcomapi.datatypes.Game, {"name": "super mario bros."})[0]
 anyp = smb.categories[0]
@@ -20,16 +32,19 @@ lb = dt.Leaderboard(api,
 lines = []
 seen = set()
 
-with open(OUTPUT, "r") as f:
-    f.readline()
-    for line in f.readlines():
-        lines.append(line)
-        seen.add(line.split(",")[0])
+try:
+    with open(OUTPUT, "r") as f:
+        f.readline()
+        for line in f.readlines():
+            lines.append(line)
+            seen.add(line.split(",")[0])
+except FileNotFoundError:
+    pass
 
 
 
 with open (OUTPUT, "w") as f:
-    f.write("src_run_id,src_platform_id,src_region_id,display_name,date_played,elapsed_ms,video_url\n")
+    f.write("src_run_id,src_platform_id,src_region_id,display_name,date_played,elapsed_ms,platform_fps,video_url\n")
     for line in lines:
         f.write(line)
 
@@ -49,6 +64,8 @@ with open (OUTPUT, "w") as f:
         if src_region_id is None:
             src_region_id = "pr184lqn" # this is a hold-over from 2021 that I don't remember why.
 
+        platform = src_platform_id + src_region_id
+        platform_fps = PLATFORM_FPS[platform]
 
         display_name = srcrun.players[0].name
         date_played = srcrun.date
@@ -77,6 +94,6 @@ with open (OUTPUT, "w") as f:
                 url = input("url: ")
 
 
-        print(f"{src_run_id},{src_platform_id},{src_region_id},{display_name},{date_played},{elapsed_ms},{url}\n")
-        f.write(f"{src_run_id},{src_platform_id},{src_region_id},{display_name},{date_played},{elapsed_ms},{url}\n")
+        print(f"{src_run_id},{src_platform_id},{src_region_id},{display_name},{date_played},{elapsed_ms},{platform_fps},{url}\n")
+        f.write(f"{src_run_id},{src_platform_id},{src_region_id},{display_name},{date_played},{elapsed_ms},{platform_fps},{url}\n")
 
