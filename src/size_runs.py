@@ -47,7 +47,7 @@ def process_crop(prefix, func):
             if not crop.startswith(prefix):
                 continue
 
-            in_path = list(raw_dir.glob(f"{src_run_id}*"))[0]
+            in_path = str(list(raw_dir.glob(f"{src_run_id}*"))[0])
             out_path = f"{VID_DIRECTORY}{src_run_id}.mp4"
 
             timestamp_start, timestamp_end = timestamps[src_run_id]
