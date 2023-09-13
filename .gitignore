@@ -2,3 +2,4 @@ raw/*
 vid/*
 src/__pycache__/
 fm2-submissions/*
+data.csv
