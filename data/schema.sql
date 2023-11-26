@@ -35,17 +35,6 @@ CREATE TABLE tas_recreation(
     inputs                      BLOB
 );
 
-CREATE TABLE smb_rom(
-    id                          INTEGER PRIMARY KEY,
-    rom                         BLOB
-);
-
--- 64 entries in RGB order, 192 bytes total
-CREATE TABLE nes_palette(
-    id                          INTEGER PRIMARY KEY,
-    palette_rgb                 BLOB
-);
-
 -- 0x20 in size, each frame references a frame_palette
 CREATE TABLE frame_palette(
     id                          INTEGER PRIMARY KEY,
@@ -58,6 +47,8 @@ CREATE TABLE tas_frame(
     frame_palette_id            INTEGER REFERENCES frame_palette(id) ON DELETE CASCADE NOT NULL,
     tas_frame_index             INTEGER,
     frame_from_four_hundred     INTEGER,
+    world                       INTEGER,
+    level                       INTEGER,
     area_pointer                INTEGER,
     area_pointer_x              INTEGER
 );
@@ -68,7 +59,13 @@ CREATE TABLE oam(
     y                           INTEGER,
     tile_index                  INTEGER,
     attributes                  INTEGER,
-    x                           INTEGER
+    x                           INTEGER,
+    is_mario                    INTEGER GENERATED ALWAYS AS 
+        ((tile_index >= 0x00 AND tile_index <= 0x4f) OR 
+         (tile_index >= 0x58 AND tile_index <= 0x5a) OR 
+         (tile_index >= 0x5c AND tile_index <= 0x5f) OR 
+         (tile_index >= 0x90 AND tile_index <= 0x93) OR 
+         (tile_index == 0x9e) OR (tile_index == 0x9f)) VIRTUAL
 );
 
 CREATE TABLE ntdiff(
@@ -79,8 +76,21 @@ CREATE TABLE ntdiff(
     value                       INTEGER
 );
 
+CREATE TABLE frame_info(
+    id                          INTEGER PRIMARY KEY,
+    frame_from_four_hundred     INTEGER,
+    world                       INTEGER,
+    level                       INTEGER,
+    area_pointer                INTEGER,
+    area_pointer_x              INTEGER,
+    frame_palette_id            INTEGER REFERENCES frame_palette(id) ON DELETE CASCADE NOT NULL,
+    minimap_left                INTEGER
+);
+
 CREATE INDEX tas_frame_run_id_idx ON tas_frame (run_id);
 CREATE INDEX tas_frame_frame_from_four_hundred_idx ON tas_frame (frame_from_four_hundred);
 CREATE INDEX oam_tas_frame_id_idx ON oam (tas_frame_id);
 CREATE INDEX splits_run_id ON splits (run_id);
 CREATE INDEX tas_frame_area_pointer_ids ON tas_frame (area_pointer);
+CREATE INDEX ntdiff_tas_frame_id_idx on ntdiff (tas_frame_id);
+
